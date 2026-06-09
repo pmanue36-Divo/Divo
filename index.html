@@ -1,256 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Divo Portal Transmission</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIVO Portal Transmission</title>
+<style>
   body {
-    margin: 0;
-    background: #000;
-    overflow: hidden;
-    font-family: 'Share Tech Mono', monospace;
-    color: white;
-    letter-spacing: 0.1rem;
-  }
-
-  #portal-container {
-    position: fixed;
-    inset: 0;
+    background-color: black;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
   }
 
-  /* HOLOGRAM MESSAGE */
-  #holoMessage {
-    position: absolute;
-    top: 12%;
-    font-size: 1.4rem;
-    opacity: 0;
-    pointer-events: none;
-    color: #00eaff;
-    text-shadow:
-      0 0 10px #00eaff,
-      0 0 25px rgba(255, 0, 200, 0.7),
-      0 0 40px rgba(0, 255, 255, 0.8);
-    transition: opacity 0.4s ease;
-    white-space: pre;
-  }
-
-  .holo-glitch {
-    animation: holoGlitch 0.45s steps(2) 1;
-  }
-
-  @keyframes holoGlitch {
-    0% { opacity: 1; transform: translate(0); filter: hue-rotate(0deg); }
-    20% { opacity: 0.8; transform: translate(-3px, 2px); filter: hue-rotate(40deg); }
-    40% { opacity: 0.6; transform: translate(3px, -2px); filter: hue-rotate(-40deg); }
-    60% { opacity: 0.9; transform: translate(-2px, 1px); filter: hue-rotate(20deg); }
-    80% { opacity: 0.7; transform: translate(2px, -1px); filter: hue-rotate(-20deg); }
-    100% { opacity: 1; transform: translate(0); filter: hue-rotate(0deg); }
-  }
-
-  /* BIG PORTAL RING + DIVO */
-  .portal-ring {
+  #portal {
     width: 320px;
     height: 320px;
     border-radius: 50%;
-    border: 4px solid rgba(0, 255, 255, 0.9);
-    box-shadow:
-      0 0 35px rgba(0, 255, 255, 1),
-      0 0 75px rgba(0, 180, 255, 0.9),
-      0 0 115px rgba(255, 0, 200, 0.8),
-      inset 0 0 35px rgba(0, 255, 255, 0.6);
+    background: radial-gradient(circle, rgba(0,255,255,0.15) 0%, rgba(0,0,0,1) 70%);
     display: flex;
-    align-items: center;
     justify-content: center;
-    animation: portalBirth 1s ease-out forwards,
-               pulseSequence 6s ease-out forwards 1s;
-    backdrop-filter: blur(3px);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    align-items: center;
     cursor: pointer;
   }
 
-  .portal-ring.clicked {
-    transform: scale(0.55);
-    box-shadow:
-      0 0 65px rgba(0, 255, 255, 1),
-      0 0 105px rgba(0, 180, 255, 1),
-      0 0 150px rgba(255, 0, 200, 1),
-      inset 0 0 45px rgba(0, 255, 255, 0.9);
+  #holoLogo {
+    width: 160px;
+    filter: drop-shadow(0 0 0px magenta);
+    transition: filter 1.5s ease, transform 1.5s ease;
   }
-
-  .portal-text {
-    font-size: 2.8rem;
-    letter-spacing: 0.4rem;
-    text-transform: uppercase;
-    opacity: 0;
-    color: #00eaff;
-    text-shadow:
-      0 0 12px #00eaff,
-      0 0 24px #0099cc,
-      0 0 40px rgba(0, 255, 255, 0.8);
-    animation: textPulse 6s ease-out forwards 1s;
-    pointer-events: none;
-  }
-
-  /* COUNTDOWN */
-  #countdown {
-    margin-top: 40px;
-    font-size: 2rem;
-    letter-spacing: 0.25rem;
-    opacity: 0;
-    animation: countdownAppear 1.5s ease forwards 7.2s;
-    color: #00eaff;
-    text-shadow:
-      0 0 8px #00eaff,
-      0 0 15px #0099cc,
-      0 0 25px rgba(0, 255, 255, 0.7);
-  }
-
-  .glitch {
-    animation: glitchEffect 0.35s steps(2) 1;
-  }
-
-  /* KEYFRAMES */
-  @keyframes portalBirth {
-    0% { transform: scale(0); opacity: 0; }
-    40% { transform: scale(0.1); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  @keyframes pulseSequence {
-    0%   { transform: scale(1); opacity: 1; }
-    20%  { transform: scale(1.12); opacity: 1; }
-    40%  { transform: scale(1); opacity: 0.85; }
-    60%  { transform: scale(1.12); opacity: 1; }
-    80%  { transform: scale(1); opacity: 0.85; }
-    100% { transform: scale(0.5); opacity: 0.4; filter: blur(1px); }
-  }
-
-  @keyframes textPulse {
-    0%   { opacity: 0; transform: scale(0.8); }
-    20%  { opacity: 1; transform: scale(1); }
-    40%  { opacity: 0.85; transform: scale(0.95); }
-    60%  { opacity: 1; transform: scale(1); }
-    80%  { opacity: 0.85; transform: scale(0.95); }
-    100% { opacity: 0; transform: scale(0.7); filter: blur(2px); }
-  }
-
-  @keyframes countdownAppear {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  @keyframes glitchEffect {
-    0% { transform: translate(0); opacity: 1; filter: hue-rotate(0deg); }
-    20% { transform: translate(-3px, 2px); opacity: 0.8; filter: hue-rotate(40deg); }
-    40% { transform: translate(3px, -2px); opacity: 0.6; filter: hue-rotate(-40deg); }
-    60% { transform: translate(-2px, 1px); opacity: 0.9; filter: hue-rotate(20deg); }
-    80% { transform: translate(2px, -1px); opacity: 0.7; filter: hue-rotate(-20deg); }
-    100% { transform: translate(0); opacity: 1; filter: hue-rotate(0deg); }
-  }
-  </style>
+</style>
 </head>
-
 <body>
-  <div id="portal-container">
-    <div id="holoMessage"></div>
 
-    <div class="portal-ring" id="portalRing">
-      <div class="portal-text">DIVO</div>
-    </div>
+<div id="portal">
+  <img id="holoLogo" src="haus-of-holo.png" alt="Haus of Holo Logo">
+</div>
 
-    <div id="countdown">Initializing…</div>
-  </div>
+<script>
+  const portal = document.getElementById('portal');
+  const logo = document.getElementById('holoLogo');
+  let clickCount = 0;
 
-  <script>
-    const countdownEl = document.getElementById("countdown");
-    const targetDate = new Date("July 17, 2026 00:00:00").getTime();
+  portal.addEventListener('click', () => {
+    clickCount++;
+    if (clickCount === 3) {
+      // Magenta pulse
+      logo.style.filter = 'drop-shadow(0 0 35px magenta)';
+      logo.style.transform = 'scale(1.08)';
 
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const diff = targetDate - now;
+      setTimeout(() => {
+        // Return to black-line state
+        logo.style.filter = 'drop-shadow(0 0 0px magenta)';
+        logo.style.transform = 'scale(1)';
+      }, 1500);
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-      if (Math.random() < 0.02) {
-        countdownEl.classList.add("glitch");
-        setTimeout(() => countdownEl.classList.remove("glitch"), 350);
-      }
+      clickCount = 0;
     }
+  });
+</script>
 
-    setTimeout(() => {
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    }, 7200);
-
-    const portalRing = document.getElementById("portalRing");
-    portalRing.addEventListener("click", () => {
-      portalRing.classList.add("clicked");
-      setTimeout(() => portalRing.classList.remove("clicked"), 250);
-    });
-
-    let tapCount = 0;
-    let tapTimer = null;
-    const holoMessage = document.getElementById("holoMessage");
-
-    portalRing.addEventListener("click", () => {
-      tapCount++;
-      if (tapCount === 1) {
-        tapTimer = setTimeout(() => tapCount = 0, 2000);
-      }
-      if (tapCount === 3) {
-        clearTimeout(tapTimer);
-        tapCount = 0;
-        showSecretMessage();
-      }
-    });
-
-    function typeText(element, text, speed, callback) {
-      element.innerHTML = "";
-      let i = 0;
-      function type() {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-          setTimeout(type, speed);
-        } else if (callback) {
-          callback();
-        }
-      }
-      type();
-    }
-
-    function showSecretMessage() {
-      holoMessage.style.opacity = 1;
-      typeText(holoMessage, "TRANSMISSION RECEIVED", 100, () => {
-        holoMessage.classList.add("holo-glitch");
-        setTimeout(() => {
-          holoMessage.classList.remove("holo-glitch");
-          typeText(holoMessage, "STAND-BY", 100);
-        }, 450);
-      });
-    }
-
-    document.addEventListener("click", (e) => {
-      if (!portalRing.contains(e.target)) {
-        holoMessage.style.opacity = 0;
-      }
-    });
-  </script>
 </body>
 </html>
-
-
-
