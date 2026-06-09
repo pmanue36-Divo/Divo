@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DIVO Portal Transmission</title>
+
 <style>
   body {
     background-color: black;
@@ -32,10 +33,11 @@
   }
 </style>
 </head>
+
 <body>
 
 <div id="portal">
-   <img id="holoLogo" src="holo-logo.png" alt="Haus of Holo Logo">
+  <img id="holoLogo" src="haus-of-holo.png" alt="Haus of Holo Logo">
 </div>
 
 <script>
@@ -45,6 +47,7 @@
 
   portal.addEventListener('click', () => {
     clickCount++;
+
     if (clickCount === 3) {
       // Magenta pulse
       logo.style.filter = 'drop-shadow(0 0 35px magenta)';
