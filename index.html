@@ -3,197 +3,179 @@
 <head>
 <meta charset="UTF-8">
 <title>DIVO</title>
-
 <style>
-    body {
-        margin: 0;
-        background: black;
-        overflow: hidden;
-        font-family: 'Poppins', sans-serif;
-    }
+  body {
+    margin: 0;
+    background: black;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+  }
 
-    /* Center container */
-    #portal-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        opacity: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+  #portal-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    /* Portal ring */
-    #portal {
-        width: 220px;
-        height: 220px;
-        border: 4px solid rgba(0, 255, 255, 0.9);
-        border-radius: 50%;
-        box-shadow: 0 0 35px rgba(0, 255, 255, 1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-    }
+  #portal {
+    width: 120px;
+    height: 120px;
+    border: 4px solid rgba(0,255,255,0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 25px rgba(0,255,255,1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+  }
 
-    /* DIVO text inside portal */
-    #divo-text {
-        color: rgba(0, 255, 255, 0.9);
-        font-size: 32px;
-        letter-spacing: 4px;
-        opacity: 0;
-    }
+  #divo-text {
+    color: rgba(0,255,255,0.9);
+    font-size: 32px;
+    letter-spacing: 4px;
+    opacity: 0;
+  }
 
-    /* Transmission hologram */
-    #transmission {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #00eaff;
-        font-size: 28px;
-        letter-spacing: 3px;
-        opacity: 0;
-        text-shadow: 0 0 12px #00eaff, 0 0 25px #00eaff;
-        animation: glitch 0.15s infinite alternate;
-        pointer-events: none;
-    }
+  #standby-text {
+    position: absolute;
+    top: calc(50% + 180px);
+    left: 50%;
+    transform: translateX(-50%);
+    color: #00eaff;
+    font-size: 22px;
+    letter-spacing: 4px;
+    opacity: 0;
+    text-shadow: 0 0 12px #00eaff;
+    animation: glitch 0.2s infinite alternate;
+  }
 
-    /* Stand-by hologram */
-    #standby-text {
-        position: absolute;
-        top: calc(50% + 180px);
-        left: 50%;
-        transform: translateX(-50%);
-        color: #00eaff;
-        font-size: 22px;
-        letter-spacing: 4px;
-        opacity: 0;
-        text-shadow: 0 0 12px #00eaff;
-        animation: glitch 0.2s infinite alternate;
-    }
+  #transmission {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #00eaff;
+    font-size: 20px;
+    letter-spacing: 2px;
+    opacity: 0;
+    text-shadow: 0 0 12px #00eaff;
+    animation: glitch 0.15s infinite alternate;
+  }
 
-    /* Slow cyan pulse */
-    @keyframes pulse {
-        0% { transform: scale(1); box-shadow: 0 0 25px rgba(0,255,255,0.8); }
-        50% { transform: scale(1.25); box-shadow: 0 0 65px rgba(0,255,255,1); }
-        100% { transform: scale(1); box-shadow: 0 0 25px rgba(0,255,255,0.8); }
-    }
+  @keyframes appearExpand {
+    0% { transform: scale(0.6); opacity: 0.3; }
+    50% { transform: scale(1.3); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
 
-    /* Collapse inward */
-    @keyframes collapse {
-        0% { transform: scale(1); opacity: 1; }
-        100% { transform: scale(0.3); opacity: 0.4; }
-    }
+  @keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 25px rgba(0,255,255,0.8); }
+    50% { transform: scale(1.25); box-shadow: 0 0 65px rgba(0,255,255,1); }
+    100% { transform: scale(1); box-shadow: 0 0 25px rgba(0,255,255,0.8); }
+  }
 
-    /* Cyan ripple outward */
-    @keyframes ripple {
-        0% {
-            box-shadow: 0 0 35px rgba(0,255,255,1),
-                        0 0 65px rgba(0,255,255,0.8),
-                        0 0 95px rgba(0,255,255,0.6);
-            opacity: 1;
-        }
-        50% {
-            box-shadow: 0 0 85px rgba(0,255,255,0.6),
-                        0 0 120px rgba(0,255,255,0.4),
-                        0 0 160px rgba(0,255,255,0.2);
-            opacity: 0.6;
-        }
-        100% {
-            box-shadow: 0 0 0 rgba(0,255,255,0);
-            opacity: 0;
-        }
-    }
+  @keyframes collapse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.3); opacity: 0.4; }
+  }
 
-    /* Stand-by breathing glow */
-    @keyframes standby {
-        0% { transform: scale(0.85); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
-        50% { transform: scale(0.9); box-shadow: 0 0 25px rgba(0,255,255,0.6); }
-        100% { transform: scale(0.85); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
+  @keyframes ripple {
+    0% {
+      box-shadow: 0 0 35px rgba(0,255,255,1),
+                  0 0 65px rgba(0,255,255,0.8),
+                  0 0 95px rgba(0,255,255,0.6);
+      opacity: 1;
     }
+    50% {
+      box-shadow: 0 0 85px rgba(0,255,255,0.6),
+                  0 0 120px rgba(0,255,255,0.4),
+                  0 0 160px rgba(0,255,255,0.2);
+      opacity: 0.6;
+    }
+    100% {
+      box-shadow: 0 0 0 rgba(0,255,255,0);
+      opacity: 0;
+    }
+  }
 
-    /* Hologram glitch */
-    @keyframes glitch {
-        0% { transform: translate(-50%, -50%) skew(0deg); }
-        100% { transform: translate(-50%, -50%) skew(1deg); }
-    }
+  @keyframes standby {
+    0% { transform: scale(0.85); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
+    50% { transform: scale(0.9); box-shadow: 0 0 25px rgba(0,255,255,0.6); }
+    100% { transform: scale(0.85); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
+  }
+
+  @keyframes glitch {
+    0% { transform: skew(0deg); }
+    100% { transform: skew(1deg); }
+  }
 </style>
 </head>
-
 <body>
 
 <div id="portal-container">
-    <div id="portal">
-        <div id="divo-text">DIVO</div>
-    </div>
+  <div id="portal">
+    <div id="divo-text">DIVO</div>
+  </div>
 </div>
 
-<div id="transmission">TRANSMISSION RECEIVED</div>
 <div id="standby-text">STAND-BY</div>
+<div id="transmission">TRANSMISSION RECEIVED</div>
 
 <script>
-    const portal = document.getElementById("portal");
-    const divoText = document.getElementById("divo-text");
-    const container = document.getElementById("portal-container");
-    const transmission = document.getElementById("transmission");
-    const standby = document.getElementById("standby-text");
+  const portal = document.getElementById("portal");
+  const divoText = document.getElementById("divo-text");
+  const container = document.getElementById("portal-container");
+  const standby = document.getElementById("standby-text");
+  const transmission = document.getElementById("transmission");
+  let clickCount = 0;
 
-    let clickCount = 0;
+  setTimeout(() => {
+    container.style.transition = "opacity 1s ease";
+    container.style.opacity = 1;
+    portal.style.transition = "opacity 1s ease";
+    portal.style.opacity = 1;
+    portal.style.animation = "appearExpand 2.5s ease forwards";
 
-    /* Fade-in start */
     setTimeout(() => {
-        container.style.transition = "opacity 1s ease";
-        container.style.opacity = 1;
+      divoText.style.transition = "opacity 1s ease";
+      divoText.style.opacity = 1;
 
-        portal.style.transition = "opacity 1s ease";
-        portal.style.opacity = 1;
+      let pulseCount = 0;
+      const pulseInterval = setInterval(() => {
+        pulseCount++;
+        portal.style.animation = "pulse 2s ease";
+        setTimeout(() => { portal.style.animation = ""; }, 2000);
 
-        divoText.style.transition = "opacity 1s ease";
-        divoText.style.opacity = 1;
+        if (pulseCount === 4) {
+          clearInterval(pulseInterval);
+          setTimeout(() => {
+            portal.style.animation = "collapse 1.5s forwards, ripple 2.5s ease-out";
+            divoText.style.opacity = 0;
 
-        /* Pulse sequence */
-        let pulseCount = 0;
-        const pulseInterval = setInterval(() => {
-            pulseCount++;
-            portal.style.animation = "pulse 2s ease";
-            setTimeout(() => { portal.style.animation = ""; }, 2000);
-
-            if (pulseCount === 4) {
-                clearInterval(pulseInterval);
-
-                /* Collapse + ripple + DIVO disappears */
-                setTimeout(() => {
-                    portal.style.animation = "collapse 1.5s forwards, ripple 2.5s ease-out";
-                    divoText.style.opacity = 0;
-
-                    /* Reform into stand-by mode */
-                    setTimeout(() => {
-                        portal.style.animation = "standby 4s ease-in-out infinite";
-                        portal.style.opacity = 0.6;
-
-                        standby.style.transition = "opacity 2s ease";
-                        standby.style.opacity = 1;
-                    }, 2500);
-
-                }, 500);
-            }
-        }, 2200);
-
-    }, 1000);
-
-    /* Secret triple-click */
-    portal.addEventListener("click", () => {
-        clickCount++;
-
-        if (clickCount === 3) {
-            transmission.style.transition = "opacity 1s ease";
-            transmission.style.opacity = 1;
+            setTimeout(() => {
+              portal.style.animation = "standby 4s ease-in-out infinite";
+              portal.style.opacity = 0.6;
+              standby.style.transition = "opacity 2s ease";
+              standby.style.opacity = 1;
+            }, 2500);
+          }, 500);
         }
+      }, 2200);
+    }, 2500);
+  }, 1000);
 
-        setTimeout(() => { clickCount = 0; }, 2000);
-    });
+  portal.addEventListener("click", () => {
+    clickCount++;
+    if (clickCount === 3) {
+      transmission.style.transition = "opacity 1s ease";
+      transmission.style.opacity = 1;
+    }
+    setTimeout(() => { clickCount = 0; }, 2000);
+  });
 </script>
 
 </body>
