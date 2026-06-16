@@ -11,7 +11,6 @@
     font-family: 'Poppins', sans-serif;
   }
 
-  /* Center container */
   #portal-container {
     position: absolute;
     top: 50%;
@@ -23,61 +22,52 @@
     align-items: center;
   }
 
-  /* Portal ring with cyan + subtle magenta blend */
   #portal {
     width: 120px;
     height: 120px;
     border: 4px solid rgba(0,255,255,0.9);
     border-radius: 50%;
     box-shadow:
-      0 0 25px rgba(0,255,255,1),        /* cyan core */
-      0 0 40px rgba(255,0,200,0.25),     /* subtle magenta inner */
-      0 0 60px rgba(255,0,200,0.35),     /* medium magenta mid */
-      0 0 90px rgba(255,0,200,0.45),     /* soft bold outer */
-      0 0 110px rgba(0,255,255,0.8);     /* cyan outer halo */
+      0 0 25px rgba(0,255,255,1),
+      0 0 40px rgba(255,0,200,0.25),
+      0 0 60px rgba(255,0,200,0.35),
+      0 0 90px rgba(255,0,200,0.45),
+      0 0 110px rgba(0,255,255,0.8);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
   }
 
-  /* DIVO text */
   #divo-text {
     color: rgba(0,255,255,0.9);
     font-size: 32px;
     letter-spacing: 4px;
     opacity: 0;
     text-shadow: 0 0 12px rgba(0,255,255,1);
+    transition: opacity 2.5s ease-in-out;
   }
 
-  /* Centered STAND-BY hologram */
-  #standby-text {
-    position: absolute;
-    top: calc(50% + 130px);
-    left: 50%;
-    transform: translateX(-50%);
-    color: #00eaff;
-    font-size: 22px;
-    letter-spacing: 4px;
-    opacity: 0;
-    text-shadow: 0 0 12px #00eaff;
-    animation: glitch 0.2s infinite alternate;
-  }
-
-  /* Hidden triple-click message */
-  #transmission {
+  /* Top-left system display */
+  #system-display {
     position: absolute;
     top: 20px;
     left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  #standby-text, #transmission {
     color: #00eaff;
     font-size: 20px;
     letter-spacing: 2px;
     opacity: 0;
     text-shadow: 0 0 12px #00eaff;
-    animation: glitch 0.15s infinite alternate;
+    transition: opacity 2s ease-in-out;
   }
 
-  /* Smooth expansion (inhale) */
   @keyframes appearExpand {
     0%   { transform: scale(0.55); opacity: 0.2; }
     30%  { transform: scale(1.15); opacity: 0.7; }
@@ -85,7 +75,6 @@
     100% { transform: scale(1);    opacity: 1; }
   }
 
-  /* Smooth pulse (breathing rhythm) */
   @keyframes pulse {
     0% {
       transform: scale(1);
@@ -113,7 +102,6 @@
     }
   }
 
-  /* Smooth collapse (slow exhale) */
   @keyframes collapse {
     0%   { transform: scale(1);    opacity: 1; }
     40%  { transform: scale(0.85); opacity: 0.8; }
@@ -121,7 +109,6 @@
     100% { transform: scale(0.3);  opacity: 0.4; }
   }
 
-  /* Smooth ripple (energy release) */
   @keyframes ripple {
     0% {
       box-shadow:
@@ -144,28 +131,10 @@
     }
   }
 
-  /* Stand-by breathing glow */
   @keyframes standby {
     0%   { transform: scale(0.85); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
     50%  { transform: scale(0.9);  box-shadow: 0 0 25px rgba(0,255,255,0.6); }
     100% { transform: scale(0.85); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
-  }
-
-  /* Flicker boot for STAND-BY */
-  @keyframes flickerBoot {
-    0% { opacity: 0; }
-    20% { opacity: 1; }
-    30% { opacity: 0; }
-    45% { opacity: 1; }
-    55% { opacity: 0.4; }
-    70% { opacity: 1; }
-    100% { opacity: 1; }
-  }
-
-  /* Hologram glitch */
-  @keyframes glitch {
-    0% { transform: skew(0deg); }
-    100% { transform: skew(1deg); }
   }
 </style>
 </head>
@@ -177,8 +146,10 @@
   </div>
 </div>
 
-<div id="standby-text">STAND-BY</div>
-<div id="transmission">TRANSMISSION RECEIVED</div>
+<div id="system-display">
+  <div id="standby-text">STAND-BY</div>
+  <div id="transmission">TRANSMISSION RECEIVED</div>
+</div>
 
 <script>
   const portal = document.getElementById("portal");
@@ -193,10 +164,9 @@
     container.style.opacity = 1;
     portal.style.opacity = 1;
     portal.style.animation = "appearExpand 2.8s ease-in-out forwards";
+    divoText.style.opacity = 1;
 
     setTimeout(() => {
-      divoText.style.opacity = 1;
-
       let pulseCount = 0;
       const pulseInterval = setInterval(() => {
         pulseCount++;
@@ -208,15 +178,13 @@
 
           setTimeout(() => {
             portal.style.animation = "collapse 2.2s forwards, ripple 3s ease-out";
+            divoText.style.transition = "opacity 2.5s ease-in-out";
             divoText.style.opacity = 0;
 
             setTimeout(() => {
               portal.style.animation = "standby 4s ease-in-out infinite";
               portal.style.opacity = 0.6;
-
-              /* Flicker boot for STAND-BY */
-              standby.style.animation =
-                "flickerBoot 1.5s ease forwards, glitch 0.2s infinite alternate";
+              standby.style.opacity = 1;
             }, 3000);
 
           }, 500);
