@@ -11,6 +11,7 @@
     font-family: 'Poppins', sans-serif;
   }
 
+  /* Center container */
   #portal-container {
     position: absolute;
     top: 50%;
@@ -22,28 +23,37 @@
     align-items: center;
   }
 
+  /* Portal ring with cyan + subtle magenta blend */
   #portal {
     width: 120px;
     height: 120px;
     border: 4px solid rgba(0,255,255,0.9);
     border-radius: 50%;
-    box-shadow: 0 0 25px rgba(0,255,255,1);
+    box-shadow:
+      0 0 25px rgba(0,255,255,1),        /* cyan core */
+      0 0 40px rgba(255,0,200,0.25),     /* subtle magenta inner */
+      0 0 60px rgba(255,0,200,0.35),     /* medium magenta mid */
+      0 0 90px rgba(255,0,200,0.45),     /* soft bold outer */
+      0 0 110px rgba(0,255,255,0.8);     /* cyan outer halo */
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
   }
 
+  /* DIVO text */
   #divo-text {
     color: rgba(0,255,255,0.9);
     font-size: 32px;
     letter-spacing: 4px;
     opacity: 0;
+    text-shadow: 0 0 12px rgba(0,255,255,1);
   }
 
+  /* Centered STAND-BY hologram */
   #standby-text {
     position: absolute;
-    top: calc(50% + 140px); /* directly below portal */
+    top: calc(50% + 130px);
     left: 50%;
     transform: translateX(-50%);
     color: #00eaff;
@@ -54,6 +64,7 @@
     animation: glitch 0.2s infinite alternate;
   }
 
+  /* Hidden triple-click message */
   #transmission {
     position: absolute;
     top: 20px;
@@ -66,34 +77,41 @@
     animation: glitch 0.15s infinite alternate;
   }
 
+  /* Portal appears small → expands → settles */
   @keyframes appearExpand {
     0% { transform: scale(0.6); opacity: 0.3; }
     50% { transform: scale(1.3); opacity: 1; }
     100% { transform: scale(1); opacity: 1; }
   }
 
+  /* Cyan pulse */
   @keyframes pulse {
     0% { transform: scale(1); box-shadow: 0 0 25px rgba(0,255,255,0.8); }
     50% { transform: scale(1.25); box-shadow: 0 0 65px rgba(0,255,255,1); }
     100% { transform: scale(1); box-shadow: 0 0 25px rgba(0,255,255,0.8); }
   }
 
+  /* Collapse inward */
   @keyframes collapse {
     0% { transform: scale(1); opacity: 1; }
     100% { transform: scale(0.3); opacity: 0.4; }
   }
 
+  /* Cyan ripple outward with subtle magenta */
   @keyframes ripple {
     0% {
-      box-shadow: 0 0 35px rgba(0,255,255,1),
-                  0 0 65px rgba(0,255,255,0.8),
-                  0 0 95px rgba(0,255,255,0.6);
+      box-shadow:
+        0 0 35px rgba(0,255,255,1),
+        0 0 65px rgba(255,0,200,0.25),
+        0 0 95px rgba(255,0,200,0.35),
+        0 0 120px rgba(0,255,255,0.6);
       opacity: 1;
     }
     50% {
-      box-shadow: 0 0 85px rgba(0,255,255,0.6),
-                  0 0 120px rgba(0,255,255,0.4),
-                  0 0 160px rgba(0,255,255,0.2);
+      box-shadow:
+        0 0 85px rgba(0,255,255,0.6),
+        0 0 120px rgba(255,0,200,0.25),
+        0 0 160px rgba(255,0,200,0.15);
       opacity: 0.6;
     }
     100% {
@@ -102,12 +120,25 @@
     }
   }
 
+  /* Stand-by breathing glow */
   @keyframes standby {
     0% { transform: scale(0.85); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
     50% { transform: scale(0.9); box-shadow: 0 0 25px rgba(0,255,255,0.6); }
     100% { transform: scale(0.85); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
   }
 
+  /* Flicker boot for STAND-BY */
+  @keyframes flickerBoot {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    30% { opacity: 0; }
+    45% { opacity: 1; }
+    55% { opacity: 0.4; }
+    70% { opacity: 1; }
+    100% { opacity: 1; }
+  }
+
+  /* Hologram glitch */
   @keyframes glitch {
     0% { transform: skew(0deg); }
     100% { transform: skew(1deg); }
@@ -133,15 +164,13 @@
   const transmission = document.getElementById("transmission");
   let clickCount = 0;
 
+  /* Start sequence */
   setTimeout(() => {
-    container.style.transition = "opacity 1s ease";
     container.style.opacity = 1;
-    portal.style.transition = "opacity 1s ease";
     portal.style.opacity = 1;
     portal.style.animation = "appearExpand 2.5s ease forwards";
 
     setTimeout(() => {
-      divoText.style.transition = "opacity 1s ease";
       divoText.style.opacity = 1;
 
       let pulseCount = 0;
@@ -152,6 +181,7 @@
 
         if (pulseCount === 4) {
           clearInterval(pulseInterval);
+
           setTimeout(() => {
             portal.style.animation = "collapse 1.5s forwards, ripple 2.5s ease-out";
             divoText.style.opacity = 0;
@@ -159,19 +189,22 @@
             setTimeout(() => {
               portal.style.animation = "standby 4s ease-in-out infinite";
               portal.style.opacity = 0.6;
-              standby.style.transition = "opacity 2s ease";
-              standby.style.opacity = 1;
+
+              /* Flicker boot for STAND-BY */
+              standby.style.animation =
+                "flickerBoot 1.5s ease forwards, glitch 0.2s infinite alternate";
             }, 2500);
+
           }, 500);
         }
       }, 2200);
     }, 2500);
   }, 1000);
 
+  /* Triple-click secret message */
   portal.addEventListener("click", () => {
     clickCount++;
     if (clickCount === 3) {
-      transmission.style.transition = "opacity 1s ease";
       transmission.style.opacity = 1;
     }
     setTimeout(() => { clickCount = 0; }, 2000);
