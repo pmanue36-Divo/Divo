@@ -2,205 +2,151 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DIVO</title>
+<title>DIVO Portal Intro</title>
+
 <style>
   body {
     margin: 0;
-    background: black;
+    background: #000;
     overflow: hidden;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Orbitron', sans-serif;
   }
 
-  #portal-container {
+  /* PORTAL */
+  .portal {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #portal {
-    width: 120px;
-    height: 120px;
-    border: 4px solid rgba(0,255,255,0.9);
+    transform: translate(-50%, -50%) scale(0.3);
+    width: 150px;
+    height: 150px;
+    border: 3px solid cyan;
     border-radius: 50%;
-    box-shadow:
-      0 0 25px rgba(0,255,255,1),
-      0 0 40px rgba(255,0,200,0.25),
-      0 0 60px rgba(255,0,200,0.35),
-      0 0 90px rgba(255,0,200,0.45),
-      0 0 110px rgba(0,255,255,0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
+    box-shadow: 0 0 25px cyan;
+    animation: portalExpand 2.5s ease-out forwards,
+               portalGlitch 0.8s infinite alternate;
   }
 
-  #divo-text {
-    color: rgba(0,255,255,0.9);
-    font-size: 32px;
-    letter-spacing: 4px;
-    opacity: 0;
-    text-shadow: 0 0 12px rgba(0,255,255,1);
-    transition: opacity 2.5s ease-in-out;
-  }
-
-  /* Top-left system display */
-  #system-display {
+  /* ROTATING LIGHT */
+  .portal::before {
+    content: "";
     position: absolute;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
+    top: -20px;
+    left: -20px;
+    width: 190px;
+    height: 190px;
+    border: 2px solid rgba(0,255,255,0.4);
+    border-radius: 50%;
+    animation: rotateLight 4s linear infinite;
   }
 
-  #standby-text, #transmission {
-    color: #00eaff;
-    font-size: 20px;
-    letter-spacing: 2px;
+  /* DIVO LOGO */
+  .logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    color: cyan;
+    font-size: 4rem;
+    letter-spacing: 12px;
     opacity: 0;
-    text-shadow: 0 0 12px #00eaff;
-    transition: opacity 2s ease-in-out;
+    animation: logoExpand 2s ease-out forwards;
+    animation-delay: 2.2s;
   }
 
-  @keyframes appearExpand {
-    0%   { transform: scale(0.55); opacity: 0.2; }
-    30%  { transform: scale(1.15); opacity: 0.7; }
-    60%  { transform: scale(1.28); opacity: 1; }
-    100% { transform: scale(1);    opacity: 1; }
+  /* PULSE ANIMATION (Portal + Logo) */
+  .pulse {
+    animation: pulseEffect 0.25s ease-in-out;
   }
 
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-      box-shadow:
-        0 0 25px rgba(0,255,255,0.8),
-        0 0 40px rgba(255,0,200,0.25);
-    }
-    40% {
-      transform: scale(1.18);
-      box-shadow:
-        0 0 55px rgba(0,255,255,1),
-        0 0 75px rgba(255,0,200,0.35);
-    }
-    70% {
-      transform: scale(1.28);
-      box-shadow:
-        0 0 85px rgba(0,255,255,1),
-        0 0 110px rgba(255,0,200,0.45);
-    }
-    100% {
-      transform: scale(1);
-      box-shadow:
-        0 0 25px rgba(0,255,255,0.8),
-        0 0 40px rgba(255,0,200,0.25);
-    }
+  @keyframes pulseEffect {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
   }
 
+  /* COLLAPSE ANIMATION */
   @keyframes collapse {
-    0%   { transform: scale(1);    opacity: 1; }
-    40%  { transform: scale(0.85); opacity: 0.8; }
-    70%  { transform: scale(0.55); opacity: 0.6; }
-    100% { transform: scale(0.3);  opacity: 0.4; }
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
   }
 
-  @keyframes ripple {
-    0% {
-      box-shadow:
-        0 0 35px rgba(0,255,255,1),
-        0 0 65px rgba(255,0,200,0.25),
-        0 0 95px rgba(255,0,200,0.35),
-        0 0 120px rgba(0,255,255,0.6);
-      opacity: 1;
-    }
-    50% {
-      box-shadow:
-        0 0 85px rgba(0,255,255,0.6),
-        0 0 120px rgba(255,0,200,0.25),
-        0 0 160px rgba(255,0,200,0.15);
-      opacity: 0.5;
-    }
-    100% {
-      box-shadow: 0 0 0 rgba(0,255,255,0);
-      opacity: 0;
-    }
+  /* KEYFRAMES */
+  @keyframes portalExpand {
+    0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0.4; }
+    100% { transform: translate(-50%, -50%) scale(5); opacity: 1; }
   }
 
-  @keyframes standby {
-    0%   { transform: scale(0.85); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
-    50%  { transform: scale(0.9);  box-shadow: 0 0 25px rgba(0,255,255,0.6); }
-    100% { transform: scale(0.85); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
+  @keyframes portalGlitch {
+    0% { filter: blur(0px); }
+    50% { filter: blur(3px); }
+    100% { filter: blur(0px); }
+  }
+
+  @keyframes rotateLight {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes logoExpand {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
   }
 </style>
 </head>
+
 <body>
 
-<div id="portal-container">
-  <div id="portal">
-    <div id="divo-text">DIVO</div>
-  </div>
-</div>
+<!-- SOUND EFFECT -->
+<audio id="pulseSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7e8c1b7e57.mp3?filename=impact-7054.mp3"></audio>
 
-<div id="system-display">
-  <div id="standby-text">STAND-BY</div>
-  <div id="transmission">TRANSMISSION RECEIVED</div>
-</div>
+<div class="portal" id="portal"></div>
+<h1 class="logo" id="logo">DIVO</h1>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
   const portal = document.getElementById("portal");
-  const divoText = document.getElementById("divo-text");
-  const container = document.getElementById("portal-container");
-  const standby = document.getElementById("standby-text");
-  const transmission = document.getElementById("transmission");
-  let clickCount = 0;
+  const logo = document.getElementById("logo");
+  const sound = document.getElementById("pulseSound");
 
-  /* Start sequence */
+  /* Wait for DIVO to appear */
   setTimeout(() => {
-    container.style.opacity = 1;
-    portal.style.opacity = 1;
-    portal.style.animation = "appearExpand 2.8s ease-in-out forwards";
-    divoText.style.opacity = 1;
 
-    setTimeout(() => {
-      let pulseCount = 0;
-      const pulseInterval = setInterval(() => {
-        pulseCount++;
-        portal.style.animation = "pulse 3.2s ease-in-out";
-        setTimeout(() => { portal.style.animation = ""; }, 3200);
+    let pulseCount = 0;
 
-        if (pulseCount === 4) {
-          clearInterval(pulseInterval);
+    function doPulse() {
+      pulseCount++;
 
-          setTimeout(() => {
-            portal.style.animation = "collapse 2.2s forwards, ripple 3s ease-out";
-            divoText.style.transition = "opacity 2.5s ease-in-out";
-            divoText.style.opacity = 0;
+      // Add pulse class
+      portal.classList.add("pulse");
+      logo.classList.add("pulse");
 
-            setTimeout(() => {
-              portal.style.animation = "standby 4s ease-in-out infinite";
-              portal.style.opacity = 0.6;
-              standby.style.opacity = 1;
-            }, 3000);
+      // Play sound
+      sound.currentTime = 0;
+      sound.play();
 
-          }, 500);
-        }
-      }, 2600);
-    }, 2800);
-  }, 1000);
+      // Remove pulse class after animation
+      setTimeout(() => {
+        portal.classList.remove("pulse");
+        logo.classList.remove("pulse");
+      }, 250);
 
-  /* Triple-click secret message */
-  portal.addEventListener("click", () => {
-    clickCount++;
-    if (clickCount === 3) {
-      transmission.style.opacity = 1;
+      // After 3 pulses → collapse
+      if (pulseCount < 3) {
+        setTimeout(doPulse, 300);
+      } else {
+        setTimeout(() => {
+          portal.style.animation = "collapse 1.2s ease-in forwards";
+          logo.style.animation = "collapse 1.2s ease-in forwards";
+        }, 400);
+      }
     }
-    setTimeout(() => { clickCount = 0; }, 2000);
-  });
+
+    doPulse();
+
+  }, 2500); // sync with logo reveal
+});
 </script>
 
 </body>
