@@ -18,8 +18,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.3);
-    width: 150px;
-    height: 150px;
+    width: 80px;
+    height: 80px;
     border: 3px solid cyan;
     border-radius: 50%;
     box-shadow: 0 0 25px cyan;
@@ -31,10 +31,10 @@
   .portal::before {
     content: "";
     position: absolute;
-    top: -20px;
-    left: -20px;
-    width: 190px;
-    height: 190px;
+    top: -10px;
+    left: -10px;
+    width: 100px;
+    height: 100px;
     border: 2px solid rgba(0,255,255,0.4);
     border-radius: 50%;
     animation: rotateLight 4s linear infinite;
@@ -54,7 +54,7 @@
     animation-delay: 2.2s;
   }
 
-  /* PULSE ANIMATION (Portal + Logo) */
+  /* PULSE ANIMATION */
   .pulse {
     animation: pulseEffect 0.25s ease-in-out;
   }
@@ -74,7 +74,7 @@
   /* KEYFRAMES */
   @keyframes portalExpand {
     0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0.4; }
-    100% { transform: translate(-50%, -50%) scale(5); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(3); opacity: 1; }
   }
 
   @keyframes portalGlitch {
