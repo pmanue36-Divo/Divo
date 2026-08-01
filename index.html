@@ -17,14 +17,14 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.3);
+    transform: translate(-50%, -50%) scale(0);
     width: 80px;
     height: 80px;
     border: 3px solid cyan;
     border-radius: 50%;
     box-shadow: 0 0 25px cyan;
-    animation: portalExpand 2.5s ease-out forwards,
-               portalHolo 1.5s ease-in-out;
+    opacity: 0;
+    animation: portalExpand 2.5s ease-out forwards;
   }
 
   /* ROTATING LIGHT */
@@ -40,84 +40,24 @@
     animation: rotateLight 4s linear infinite;
   }
 
-  /* SCAN-LINE SHIMMER */
-  .portal::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(0,255,255,0.1) 0px,
-      rgba(0,255,255,0.05) 2px,
-      transparent 4px
-    );
-    border-radius: 50%;
-    animation: shimmer 2s linear infinite;
-  }
-
   /* DIVO LOGO */
   .logo {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0);
+    transform: translate(-50%, -50%) scale(0.8);
     color: cyan;
-    font-size: 4rem;
-    letter-spacing: 12px;
+    font-size: 3.5rem;
+    letter-spacing: 10px;
     opacity: 0;
-    animation: logoExpand 2s ease-out forwards;
-    animation-delay: 2.2s;
-  }
-
-  /* PULSE ANIMATION */
-  .pulse {
-    animation: pulseEffect 0.25s ease-in-out;
-  }
-
-  @keyframes pulseEffect {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.15); }
-    100% { transform: scale(1); }
-  }
-
-  /* COLLAPSE ANIMATION */
-  @keyframes collapse {
-    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    animation: logoFadeIn 2.5s ease-out forwards;
+    animation-delay: 0.5s;
   }
 
   /* KEYFRAMES */
   @keyframes portalExpand {
-    0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0.4; }
-    100% { transform: translate(-50%, -50%) scale(3); opacity: 1; }
-  }
-
-  @keyframes portalHolo {
-    0% {
-      opacity: 0;
-      filter: brightness(0.5) contrast(1.2);
-      transform: translate(-50%, -50%) scale(0.3);
-    }
-    30% {
-      opacity: 0.6;
-      filter: brightness(1.5) contrast(1.8) saturate(2);
-    }
-    60% {
-      opacity: 1;
-      filter: brightness(1.8) contrast(2) saturate(2.5);
-    }
-    100% {
-      opacity: 1;
-      filter: brightness(1.2) contrast(1.5);
-    }
-  }
-
-  @keyframes shimmer {
-    from { transform: translateY(0); }
-    to { transform: translateY(4px); }
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
   }
 
   @keyframes rotateLight {
@@ -125,66 +65,17 @@
     to { transform: rotate(360deg); }
   }
 
-  @keyframes logoExpand {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  @keyframes logoFadeIn {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   }
 </style>
 </head>
 
 <body>
 
-<!-- SOUND EFFECT -->
-<audio id="pulseSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7e8c1b7e57.mp3?filename=impact-7054.mp3"></audio>
-
-<div class="portal" id="portal"></div>
-<h1 class="logo" id="logo">DIVO</h1>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const portal = document.getElementById("portal");
-  const logo = document.getElementById("logo");
-  const sound = document.getElementById("pulseSound");
-
-  /* Wait for DIVO to appear */
-  setTimeout(() => {
-
-    let pulseCount = 0;
-
-    function doPulse() {
-      pulseCount++;
-
-      // Add pulse class
-      portal.classList.add("pulse");
-      logo.classList.add("pulse");
-
-      // Play sound
-      sound.currentTime = 0;
-      sound.play();
-
-      // Remove pulse class after animation
-      setTimeout(() => {
-        portal.classList.remove("pulse");
-        logo.classList.remove("pulse");
-      }, 250);
-
-      // After 3 pulses → collapse
-      if (pulseCount < 3) {
-        setTimeout(doPulse, 300);
-      } else {
-        setTimeout(() => {
-          portal.style.animation = "collapse 1.2s ease-in forwards";
-          logo.style.animation = "collapse 1.2s ease-in forwards";
-        }, 400);
-      }
-    }
-
-    doPulse();
-
-  }, 2500); // sync with logo reveal
-});
-</script>
+<div class="portal"></div>
+<h1 class="logo">DIVO</h1>
 
 </body>
 </html>
