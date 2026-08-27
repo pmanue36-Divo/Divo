@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DIVO Portal 2058</title>
-
 <style>
   body {
     margin: 0;
@@ -13,118 +12,66 @@
     font-family: 'Montserrat', sans-serif;
   }
 
-  /* Container */
-  #portal {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-  }
-
   /* Circuit lines crawling inward */
-  .circuit-line {
+  .line {
     position: absolute;
     background: #000;
-    opacity: 0;
-    animation: crawl 3s forwards ease-out;
+    opacity: 0.9;
+    animation: crawl 3s linear forwards;
   }
 
-  /* Horizontal lines */
-  .h-line {
-    height: 2px;
-    width: 0;
-  }
-
-  /* Vertical lines */
-  .v-line {
-    width: 2px;
-    height: 0;
-  }
-
-  /* Crawl animation */
   @keyframes crawl {
-    0% { opacity: 1; }
-    100% { opacity: 1; }
+    0% { transform: scaleX(0) scaleY(0); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: scaleX(1) scaleY(1); opacity: 1; }
   }
 
-  /* Circular portal */
-  #circle {
+  /* Black portal forming */
+  .portal {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 450px;
-    height: 450px;
-    margin-left: -225px;
-    margin-top: -225px;
+    width: 400px;
+    height: 400px;
+    margin-left: -200px;
+    margin-top: -200px;
     border-radius: 50%;
-    border: 4px solid #000;
-    box-shadow: 0 0 40px rgba(0,0,0,0.4);
-    animation: circleGlow 4s ease forwards;
+    background: radial-gradient(circle, #000000 0%, #111111 40%, transparent 70%);
+    animation: formPortal 4s ease forwards;
     opacity: 0;
   }
 
-  @keyframes circleGlow {
-    0% { opacity: 0; transform: scale(0.6); }
-    100% { opacity: 1; transform: scale(1); }
-  }
-
-  /* Black bleed effect */
-  #bleed {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 600px;
-    height: 600px;
-    margin-left: -300px;
-    margin-top: -300px;
-    background: radial-gradient(circle, rgba(0,0,0,0.7) 0%, transparent 70%);
-    opacity: 0;
-    animation: bleedIn 5s ease forwards;
-  }
-
-  @keyframes bleedIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+  @keyframes formPortal {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
   }
 
   /* DIVO logo emerging */
-  #divo {
+  .logo {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 5rem;
     font-weight: 700;
-    letter-spacing: 0.3rem;
     color: #000;
+    letter-spacing: 0.3rem;
     opacity: 0;
-    animation: divoReveal 5s ease forwards;
+    animation: reveal 5s ease forwards;
   }
 
-  @keyframes divoReveal {
+  @keyframes reveal {
     0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
     100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   }
 </style>
 </head>
-
 <body>
-<div id="portal">
-
-  <!-- Circuit lines crawling inward -->
-  <div class="circuit-line h-line" style="top:10%; left:0; animation-delay:0.2s; width:100%;"></div>
-  <div class="circuit-line h-line" style="top:90%; left:0; animation-delay:0.4s; width:100%;"></div>
-  <div class="circuit-line v-line" style="left:10%; top:0; animation-delay:0.6s; height:100%;"></div>
-  <div class="circuit-line v-line" style="left:90%; top:0; animation-delay:0.8s; height:100%;"></div>
-
-  <!-- Portal circle -->
-  <div id="circle"></div>
-
-  <!-- Black bleed -->
-  <div id="bleed"></div>
-
-  <!-- DIVO logo -->
-  <div id="divo">DIVO</div>
-
-</div>
+  <div class="line" style="top:10%; left:0; width:100%; height:2px; animation-delay:0.2s;"></div>
+  <div class="line" style="top:90%; left:0; width:100%; height:2px; animation-delay:0.4s;"></div>
+  <div class="line" style="left:10%; top:0; width:2px; height:100%; animation-delay:0.6s;"></div>
+  <div class="line" style="left:90%; top:0; width:2px; height:100%; animation-delay:0.8s;"></div>
+  <div class="portal"></div>
+  <div class="logo">DIVO</div>
 </body>
 </html>
