@@ -1,81 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>DIVO Portal Intro</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DIVO Portal</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(to bottom, #ffffff 70%, #000000 100%);
+      font-family: 'Montserrat', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
 
-<style>
-  body {
-    margin: 0;
-    background: #000;
-    overflow: hidden;
-    font-family: 'Orbitron', sans-serif;
-  }
+    /* Circuit pattern overlay */
+    .circuit {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('circuit-pattern.svg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 0.15;
+      filter: brightness(0.2) contrast(1.3);
+      z-index: 1;
+    }
 
-  /* PORTAL */
-  .portal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    width: 80px;
-    height: 80px;
-    border: 3px solid cyan;
-    border-radius: 50%;
-    box-shadow: 0 0 25px cyan;
-    opacity: 0;
-    animation: portalExpand 2.5s ease-out forwards;
-  }
+    /* Bleeding black effect */
+    .bleed {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 40%;
+      background: radial-gradient(circle at bottom, rgba(0,0,0,0.9) 0%, transparent 70%);
+      z-index: 2;
+    }
 
-  /* ROTATING LIGHT */
-  .portal::before {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: 100px;
-    height: 100px;
-    border: 2px solid rgba(0,255,255,0.4);
-    border-radius: 50%;
-    animation: rotateLight 4s linear infinite;
-  }
+    /* Logo styling */
+    .logo {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-size: 5rem;
+      font-weight: 700;
+      color: #00ffff;
+      letter-spacing: 0.3rem;
+      text-shadow: 0 0 20px #00ffff;
+      animation: fadeIn 2s ease forwards;
+      opacity: 0;
+    }
 
-  /* DIVO LOGO */
-  .logo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    color: cyan;
-    font-size: 3.5rem;
-    letter-spacing: 10px;
-    opacity: 0;
-    animation: logoFadeIn 2.5s ease-out forwards;
-    animation-delay: 0.5s;
-  }
-
-  /* KEYFRAMES */
-  @keyframes portalExpand {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  }
-
-  @keyframes rotateLight {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  @keyframes logoFadeIn {
-    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  }
-</style>
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+  </style>
 </head>
-
 <body>
-
-<div class="portal"></div>
-<h1 class="logo">DIVO</h1>
-
+  <div class="circuit"></div>
+  <div class="bleed"></div>
+  <div class="logo">DIVO</div>
 </body>
 </html>
